@@ -1,13 +1,61 @@
-Version: 1.0
+## Caching the inverse of a matrix for Programming Assignment 2
 
-RestoreWorkspace: Default
-SaveWorkspace: Default
-AlwaysSaveHistory: Default
+##setup for how to store a matrix
 
-EnableCodeIndexing: Yes
-UseSpacesForTab: Yes
-NumSpacesForTab: 8
-Encoding: UTF-8
+makeCacheMatrix <- function(x = matrix()) {
+        #setup initial_matrix variable
+        inverse_matrix <- NULL
+        
+        #set the matrix
+        set <- function(m){
+                inital_matrix <<- m
+                inverse_matrix <<- NULL
+        }
+        
+        #get the matrix
+        get <- function(){
+                return(initial_matrix)
+        }
+        
+        #set the inverse
+        setinverse <- function(inverse){
+                inverse_matrix <<- inverse
+                
+        }
+        
+        #get the inverse
+        getinverse <- function(){
+                return(inverse_matrix)
+        }
+        
+        #put it together
+        list(set = set, 
+             get = get, 
+             setinverse = setinverse, 
+             getinverse = getinverse)
 
-RnwWeave: Sweave
-LaTeX: pdfLaTeX
+}
+
+
+## actually returns the final matrix
+
+cacheSolve <- function(x, ...) {
+        ## setup matrix_inverse
+        matrix_inverse = NULL
+        
+        #go back and look at makecache for a starting point
+        if(x = makeCacheMatrix()){
+                makeCacheObject <- makeCacheMatrix()
+                makeCacheObject$set(x)
+                matrix_inverse <- makeCacheObject$getinverse()
+        }
+        #if it's not there solve for it here
+        else {
+                matrix_inverse <- solve(makeCacheObject$get(), ...)
+                makeCacheObject$setinverse(matrix_inverse)
+        }
+        
+        #return the results
+        return(matrix_inverse)
+       
+}
